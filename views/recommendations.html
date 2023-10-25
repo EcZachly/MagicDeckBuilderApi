@@ -1,0 +1,159 @@
+<html>
+
+
+
+<head>
+
+<style>
+/*button{
+	width: 200px;
+	height: 200px;
+}*/
+
+svg{
+	margin: 30px;
+}
+
+.bar {
+  fill: orange;
+}
+
+.bar:hover {
+  fill: red ;
+}
+
+body {
+  font: 10px sans-serif;
+  margin: 0;
+}
+
+path.line {
+  fill: none;
+  stroke: #666;
+  stroke-width: 1.5px;
+}
+
+path.area {
+  fill: #e7e7e7;
+}
+
+.axis {
+  shape-rendering: crispEdges;
+}
+
+.x.axis line {
+  stroke: #fff;
+}
+
+.x.axis .minor {
+  stroke-opacity: .5;
+}
+
+.x.axis path {
+  display: none;
+}
+
+.y.axis line, .y.axis path {
+  fill: none;
+  stroke: #000;
+}
+
+</style>
+<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.17/require.min.js"></script>
+</head>
+
+
+<body>
+
+<ul id="list"/>
+
+
+<input type="text" id="card" >
+
+<script type="text/javascript">
+		$( "#card" ).keypress(function(ev) {
+			console.log(ev.which)
+		if(ev.which == 13)
+		$.get('http://localhost:3000/mtg/recommend/cards?limit=50&name=' + ev.target.value, function(result, err){
+				$("img").remove()
+				console.log(result)
+				result.forEach(function(v, i){
+					$.get('http://localhost:3000/mtg/cards/typeahead?q=' + v.name, function(card, err){
+						var img = document.createElement("img")
+						img.id = v.name
+
+						img.src = card[0].editions[0].image_url["en"]
+						if(i < 15){
+							console.log(card[0].editions[0].image_url)
+						$("#list").append(img)
+						}
+
+
+					})
+					
+				})
+			})
+		});
+
+		function getCards(ev){
+
+		
+
+
+		}
+
+	
+	 $.get('http://magicapp.herokuapp.com/v1/decks', function(result, err){
+	 		console.log(result)
+
+	 	result.forEach(function(v, i){
+
+
+	 		
+				$.get('http://magicapp.herokuapp.com/api/decks/stats/curve/' + v._id, function(result, err){			
+					console.log(result)
+					$("#list").append("<h1>" + v.name + "</h1>")
+					$("#list").append(result)
+				})
+
+
+				$.get('http://localhost:3000/api/decks/stats/graphing/' + v._id, function(result, err){
+					
+
+					$("#list").append("<h1>" + v.name + "</h1>")
+					$("#list").append(result)
+
+
+
+				})
+
+
+
+
+
+				
+
+
+
+	 	})
+	 	
+
+	 })
+</script>
+
+
+
+</body>
+
+
+
+</html>

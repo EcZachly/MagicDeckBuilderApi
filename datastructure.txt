@@ -1,0 +1,14 @@
+cards can have 1 or many editions
+
+Cards don't have prices only editions do. 
+Cards don't have URLs only editions do. 
+
+image_urls are weird. 
+In JavaScript it'd be like 
+card.editions[0].image_urls["en"][0]
+
+
+prices are kinda weird too
+card.editions[0].price["high"]
+card.editions[0].price["mid"]
+card.editions[0].price["low"]
